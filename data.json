@@ -4,68 +4,37 @@
             "name": "Hopper",
             "partitions": [
                 {
-                    "name": "normal",
-                    "nodes": 51,
+                    "name": "general",
+                    "nodes": 10,
                     "cores_per_node": 32,
-                    "memory_per_node": 60000,
+                    "memory_per_node": 93000,
                     "min_nodes": 1,
-                    "max_nodes": 32,
+                    "max_nodes": 4,
                     "max_walltime": "48:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--partition=normal"
+                    "command": "--partition=general"
                 },
                 {
                     "name": "debug",
-                    "nodes": 1000,
-                    "cores_per_node": 8,
-                    "memory_per_node": 60000,
+                    "nodes": 2,
+                    "cores_per_node": 32,
+                    "memory_per_node": 93000,
                     "min_nodes": 1,
-                    "max_nodes": 8,
-                    "max_walltime": "00:30:00",
+                    "max_nodes": 2,
+                    "max_walltime": "04:00:00",
                     "node_allocation": "exclusive",
                     "command": "--partition=debug"
                 },
                 {
                     "name": "condo",
-                    "nodes": 1000,
-                    "cores_per_node": 16,
-                    "memory_per_node": 60000,
+                    "nodes": 51,
+                    "cores_per_node": 32,
+                    "memory_per_node": 93000,
                     "min_nodes": 1,
-                    "max_nodes": 10,
+                    "max_nodes": 8,
                     "max_walltime": "48:00:00",
                     "node_allocation": "exclusive",
                     "command": "--partition=condo"
-                },
-                {
-                    "name": "optimist",
-                    "nodes": 1000,
-                    "cores_per_node": 32,
-                    "memory_per_node": 60000,
-                    "min_nodes": 1,
-                    "max_nodes": 32,
-                    "max_walltime": "999:00:00",
-                    "node_allocation": "exclusive",
-                    "command": "--partition=optimist"
-                },
-                {
-                    "name": "bigmem",
-                    "nodes": 8,
-                    "cores_per_node": 32,
-                    "memory_per_node": 500000,
-                    "max_walltime": "336:00:00",
-                    "node_allocation": "shared",
-                    "command": "--partition=bigmem"
-
-                },
-                {
-                    "name": "course",
-                    "nodes": 4,
-                    "cores_per_node": 32,
-                    "memory_per_node": 60000,
-                    "max_walltime": "168:00:00",
-                    "node_allocation": "shared",
-                    "command": "--partition=course --reservation=carc_HPC_onboarding"
-
                 }
             ]
         },
@@ -73,25 +42,26 @@
             "name": "Taos",
             "partitions": [
                 {
-                    "name": "normal",
+                    "name": "ceti",
                     "nodes": 320,
                     "cores_per_node": 52,
                     "memory_per_node": 182000,
                     "min_nodes": 1,
                     "max_nodes": 256,
                     "max_walltime": "168:00:00",
-                    "node_allocation": "shared"
+                    "node_allocation": "exclusive",
+                    "command": "--partition=ceti"
                 },
                 {
-                    "name": "devel",
+                    "name": "ceti-backup",
                     "nodes": 256,
                     "cores_per_node": 52,
                     "memory_per_node": 182000,
                     "min_nodes": 1,
                     "max_nodes": 128,
                     "max_walltime": "2:00:00",
-                    "node_allocation": "shared",
-                    "command": "--qos=devel"
+                    "node_allocation": "exclusive",
+                    "command": "--partition=ceti-backup"
                 },
                 {
                     "name": "optimist",
@@ -101,7 +71,7 @@
                     "min_nodes": 1,
                     "max_nodes": 256,
                     "max_walltime": "999:00:00",
-                    "node_allocation": "shared",
+                    "node_allocation": "exclusive",
                     "command": "--partition=optimist"
                 },
                 {
@@ -113,7 +83,7 @@
                     "min_nodes": 1,
                     "max_nodes": 256,
                     "max_walltime": "336:00:00",
-                    "node_allocation": "shared",
+                    "node_allocation": "exclusive",
                     "command": "--partition=accel"
                 },
                 {
@@ -124,7 +94,7 @@
                     "min_nodes": 1,
                     "max_nodes": 256,
                     "max_walltime": "336:00:00",
-                    "node_allocation": "shared",
+                    "node_allocation": "exclusive",
                     "command": "--partition=bigmem"
                 }
             ]
@@ -151,7 +121,7 @@
                     "max_nodes": 4,
                     "max_walltime": "1:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--qos=devel"
+                    "command": "--partition=general"
                 },
                 {
                     "name": "accel",
@@ -160,7 +130,7 @@
                     "memory_per_node": 500000,
                     "gpus_per_node": 64,
                     "max_walltime": "168:00:00",
-                    "node_allocation": "shared",
+                    "node_allocation": "exclusive",
                     "command": "--partition=accel"
                 }
             ]
@@ -187,17 +157,47 @@
                     "max_nodes": 4,
                     "max_walltime": "1:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--qos=devel"
+                    "command": "--partition=general"
                 },
                 {
-                    "name": "accel",
+                    "name": "accel1",
                     "nodes": 4,
                     "cores_per_node": 64,
                     "memory_per_node": 500000,
                     "gpus_per_node": 64,
                     "max_walltime": "168:00:00",
-                    "node_allocation": "shared",
-                    "command": "--partition=accel"
+                    "node_allocation": "exclusive",
+                    "command": "--partition=accel1"
+                },
+                {
+                    "name": "accel2",
+                    "nodes": 4,
+                    "cores_per_node": 64,
+                    "memory_per_node": 500000,
+                    "gpus_per_node": 64,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=accel2"
+                },
+                {
+                    "name": "bigmem1",
+                    "nodes": 8,
+                    "cores_per_node": 32,
+                    "memory_per_node": 500000,
+                    "max_walltime": "336:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=bigmem1"
+
+                },
+                {
+                    "name": "bigmem2",
+                    "nodes": 8,
+                    "cores_per_node": 32,
+                    "memory_per_node": 500000,
+                    "max_walltime": "336:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=bigmem2"
+
                 }
             ]
         },

@@ -10,7 +10,7 @@ createApp({
       selectedCluster: null,
       selectedPartition: null,
       selectedWallTime: "00:07:00",
-      jobName: "Test",
+      jobName: "test",
       accountNumber: "1000001",
       outputFilename: "slurm-%j.out",
       partitionCommand: "",
@@ -19,7 +19,7 @@ createApp({
       maxNodes: 32,
       minNodes: 1,
       maxTasks: 1024,
-      maxMem: 65536,
+      maxMem: 93000,
       maxCores: 32,
       maxGPU: 2,
       allowShared: true,
@@ -30,7 +30,7 @@ createApp({
       useCpuPerTask: false,
       useMemory: false,
       useGPU: false,
-      useModules: false,
+      useModules: true,
       useCommand: true,
 
 

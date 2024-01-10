@@ -9,7 +9,7 @@ createApp({
       clusters: {},
       selectedCluster: null,
       selectedPartition: null,
-      selectedWallTime: "00:07:00",
+      selectedWallTime: "00:08:00",
       jobName: "test",
       accountNumber: "1000001",
       outputFilename: "slurm-%j.out",
@@ -18,7 +18,7 @@ createApp({
       maxWalltime: "48:00:00",
       maxNodes: 32,
       minNodes: 1,
-      maxTasks: 1024,
+      maxTasks: 1,
       maxMem: 93000,
       maxCores: 32,
       maxGPU: 2,
@@ -78,7 +78,7 @@ createApp({
         job += "#SBATCH --cpus-per-task=" + this.selectedCpuPerTask + "   ## Number of CPUs allocated for each task\n";
       }
       if (this.useGPU) {
-        job += "#SBATCH --gpus=" + this.selectedGPU + "   ## CPUs allocated per task\n";
+        job += "#SBATCH --gpus=" + this.selectedGPU + "   ## GPUs allocated per task\n";
       }
       if (this.selectedRequeue) {
         job += "#SBATCH --requeue   ## Allows slurm to requeue a job in case of preemption or node failure\n"

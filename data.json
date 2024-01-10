@@ -81,34 +81,25 @@
             "partitions": [
                 {
                     "name": "normal",
-                    "nodes": 1340,
-                    "cores_per_node": 128,
-                    "memory_per_node": 250000,
-                    "min_nodes": 4,
-                    "max_nodes": 512,
-                    "max_walltime": "96:00:00",
-                    "node_allocation": "exclusive"
+                    "nodes": 300,
+                    "cores_per_node": 8,
+                    "memory_per_node": 48000,
+                    "min_nodes": 1,
+                    "max_nodes": 6,
+                    "max_walltime": "48:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=normal"
                 },
                 {
-                    "name": "devel",
+                    "name": "debug",
                     "nodes": 4,
-                    "cores_per_node": 128,
-                    "memory_per_node": 250000,
+                    "cores_per_node": 8,
+                    "memory_per_node": 48000,
                     "min_nodes": 1,
                     "max_nodes": 4,
-                    "max_walltime": "1:00:00",
+                    "max_walltime": "48:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--partition=general"
-                },
-                {
-                    "name": "accel",
-                    "nodes": 4,
-                    "cores_per_node": 64,
-                    "memory_per_node": 500000,
-                    "gpus_per_node": 64,
-                    "max_walltime": "168:00:00",
-                    "node_allocation": "exclusive",
-                    "command": "--partition=accel"
+                    "command": "--partition=debug"
                 }
             ]
         },
@@ -116,65 +107,72 @@
             "name": "Xena",
             "partitions": [
                 {
-                    "name": "normal",
-                    "nodes": 1340,
-                    "cores_per_node": 128,
-                    "memory_per_node": 250000,
-                    "min_nodes": 4,
-                    "max_nodes": 512,
-                    "max_walltime": "96:00:00",
-                    "node_allocation": "exclusive"
+                    "name": "singleGPU",
+                    "nodes": 23,
+                    "cores_per_node": 16,
+                    "memory_per_node": 61000,
+                    "min_nodes": 1,
+                    "max_nodes": 12,
+                    "gpus_per_node": 1,
+                    "max_walltime": "2-00:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=singleGPU"
+                },
+                {
+                    "name": "dualGPU",
+                    "nodes": 4,
+                    "cores_per_node": 16,
+                    "memory_per_node": "53000-61000",
+                    "min_nodes": 1,
+                    "max_nodes": 1,
+                    "gpus_per_node": 2,
+                    "max_walltime": "2-00:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=dualGPU"
+                },
+                {
+                    "name": "bigmem-1TB",
+                    "nodes": 2,
+                    "cores_per_node": 64,
+                    "memory_per_node": 1000000,
+                    "min_nodes": 1,
+                    "max_nodes": 2,
+                    "max_walltime": "2-00:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=bigmem-1TB"
+                },
+                {
+                    "name": "bigmem-3TB",
+                    "nodes": 2,
+                    "cores_per_node": 64,
+                    "memory_per_node": 3000000,
+                    "min_nodes": 1,
+                    "max_nodes": 2,
+                    "max_walltime": "2-00:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=bigmem-3TB"
                 },
                 {
                     "name": "debug",
-                    "nodes": 4,
-                    "cores_per_node": 128,
-                    "memory_per_node": 250000,
+                    "nodes": 2,
+                    "cores_per_node": 16,
+                    "memory_per_node": 61000,
                     "min_nodes": 1,
-                    "max_nodes": 4,
-                    "max_walltime": "1:00:00",
+                    "max_nodes": 1,
+                    "max_walltime": "04:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--partition=general"
+                    "command": "--partition=debug"
                 },
                 {
-                    "name": "accel1",
-                    "nodes": 4,
-                    "cores_per_node": 64,
-                    "memory_per_node": 500000,
-                    "gpus_per_node": 64,
-                    "max_walltime": "168:00:00",
+                    "name": "systems",
+                    "nodes": 1,
+                    "cores_per_node": 16,
+                    "memory_per_node": 61000,
+                    "min_nodes": 1,
+                    "max_nodes": 1,
+                    "max_walltime": "2-00:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--partition=accel1"
-                },
-                {
-                    "name": "accel2",
-                    "nodes": 4,
-                    "cores_per_node": 64,
-                    "memory_per_node": 500000,
-                    "gpus_per_node": 64,
-                    "max_walltime": "168:00:00",
-                    "node_allocation": "exclusive",
-                    "command": "--partition=accel2"
-                },
-                {
-                    "name": "bigmem1",
-                    "nodes": 8,
-                    "cores_per_node": 32,
-                    "memory_per_node": 500000,
-                    "max_walltime": "336:00:00",
-                    "node_allocation": "exclusive",
-                    "command": "--partition=bigmem1"
-
-                },
-                {
-                    "name": "bigmem2",
-                    "nodes": 8,
-                    "cores_per_node": 32,
-                    "memory_per_node": 500000,
-                    "max_walltime": "336:00:00",
-                    "node_allocation": "exclusive",
-                    "command": "--partition=bigmem2"
-
+                    "command": "--partition=systems"
                 }
             ]
         },

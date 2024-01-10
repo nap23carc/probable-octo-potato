@@ -1,0 +1,182 @@
+{
+    "clusters": [
+        {
+            "name": "Fram",
+            "partitions": [
+                {
+                    "name": "normal",
+                    "nodes": 996,
+                    "cores_per_node": 32,
+                    "memory_per_node": 60000,
+                    "min_nodes": 1,
+                    "max_nodes": 32,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "exclusive"
+                },
+                {
+                    "name": "devel",
+                    "nodes": 1000,
+                    "cores_per_node": 8,
+                    "memory_per_node": 60000,
+                    "min_nodes": 1,
+                    "max_nodes": 8,
+                    "max_walltime": "00:30:00",
+                    "node_allocation": "exclusive",
+                    "command": "--qos=devel"
+                },
+                {
+                    "name": "short",
+                    "nodes": 1000,
+                    "cores_per_node": 16,
+                    "memory_per_node": 60000,
+                    "min_nodes": 1,
+                    "max_nodes": 10,
+                    "max_walltime": "02:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--qos=short"
+                },
+                {
+                    "name": "optimist",
+                    "nodes": 1000,
+                    "cores_per_node": 32,
+                    "memory_per_node": 60000,
+                    "min_nodes": 1,
+                    "max_nodes": 32,
+                    "max_walltime": "999:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=optimist"
+                },
+                {
+                    "name": "bigmem",
+                    "nodes": 8,
+                    "cores_per_node": 32,
+                    "memory_per_node": 500000,
+                    "max_walltime": "336:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=bigmem"
+
+                },
+                {
+                    "name": "course",
+                    "nodes": 4,
+                    "cores_per_node": 32,
+                    "memory_per_node": 60000,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=course --reservation=NRIS_HPC_onboarding"
+
+                }
+            ]
+        },
+        {
+            "name": "Saga",
+            "partitions": [
+                {
+                    "name": "normal",
+                    "nodes": 320,
+                    "cores_per_node": 52,
+                    "memory_per_node": 182000,
+                    "min_nodes": 1,
+                    "max_nodes": 256,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "shared"
+                },
+                {
+                    "name": "devel",
+                    "nodes": 256,
+                    "cores_per_node": 52,
+                    "memory_per_node": 182000,
+                    "min_nodes": 1,
+                    "max_nodes": 128,
+                    "max_walltime": "2:00:00",
+                    "node_allocation": "shared",
+                    "command": "--qos=devel"
+                },
+                {
+                    "name": "optimist",
+                    "nodes": 320,
+                    "cores_per_node": 52,
+                    "memory_per_node": 182000,
+                    "min_nodes": 1,
+                    "max_nodes": 256,
+                    "max_walltime": "999:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=optimist"
+                },
+                {
+                    "name": "accel",
+                    "nodes": 8,
+                    "cores_per_node": 24,
+                    "memory_per_node": 372000,
+                    "gpus_per_node": 4,
+                    "min_nodes": 1,
+                    "max_nodes": 256,
+                    "max_walltime": "336:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=accel"
+                },
+                {
+                    "name": "bigmem",
+                    "nodes": 36,
+                    "cores_per_node": 52,
+                    "memory_per_node": 3000000,
+                    "min_nodes": 1,
+                    "max_nodes": 256,
+                    "max_walltime": "336:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=bigmem"
+                }
+            ]
+        },
+        {
+            "name": "Betzy",
+            "partitions": [
+                {
+                    "name": "normal",
+                    "nodes": 1340,
+                    "cores_per_node": 128,
+                    "memory_per_node": 250000,
+                    "min_nodes": 4,
+                    "max_nodes": 512,
+                    "max_walltime": "96:00:00",
+                    "node_allocation": "exclusive"
+                },
+                {
+                    "name": "preproc",
+                    "nodes": 6,
+                    "cores_per_node": 128,
+                    "memory_per_node": 1000000,
+                    "min_nodes": 1,
+                    "max_nodes": 1,
+                    "max_walltime": "24:00:00",
+                    "node_allocation": "shared",
+                    "command": "--qos=preproc"
+                },
+                {
+                    "name": "devel",
+                    "nodes": 4,
+                    "cores_per_node": 128,
+                    "memory_per_node": 250000,
+                    "min_nodes": 1,
+                    "max_nodes": 4,
+                    "max_walltime": "1:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--qos=devel"
+                },
+                {
+                    "name": "accel",
+                    "nodes": 4,
+                    "cores_per_node": 64,
+                    "memory_per_node": 500000,
+                    "gpus_per_node": 64,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=accel"
+                }
+            ]
+        },
+        {
+            "name": "Other"
+        }
+    ]
+}

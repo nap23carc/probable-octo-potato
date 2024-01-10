@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Slurm job script generator</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.global.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.3.3/dist/axios.min.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="/job-script-generator/nris.ico">
+
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.10/dist/js/uikit.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/uikit@3.16.10/dist/css/uikit.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <div class="uk-container uk-margin-top uk-margin-large-bottom">
+      <h1>Slurm job script generator</h1>
+
+      <div class="uk-grid-divider" uk-grid>
+
+        <div class="uk-width-1-4">
+
+          <form class="uk-form-stacked">
+
+            <!-- Clusters selection -->
+            <div class="uk-margin">
+              <div class="uk-form-label">Select cluster</div>
+              <div v-for="(cluster, index) in clusters" :key="index">
+                <input type="radio" :id="cluster.name" :value="cluster" v-model="selectedCluster"
+                  @change="changeCluster">
+                <label :for="cluster.name">{{ cluster.name }}</label>
+              </div>
+            </div>
+
+            <!-- Partitions selection -->
+            <div class="uk-margin" v-if="selectedCluster && selectedCluster.name != 'Other'">
+              <div class="uk-form-label">Select partition</div>
+              <div v-for="(partition, index) in selectedCluster.partitions" :key="index">
+                <input type="radio" :id="partition.name" :value="partition" v-model="selectedPartition"
+                  @change="changePartition">
+                <label :for="partition.name">{{ partition.name }}</label>
+              </div>
+            </div>
+
+            <!-- Specifications -->
+            <div class="uk-margin">
+              <div class="uk-form-label">I want to specify ...</div>
+
+              <label><input type="checkbox" v-model="useNodes" @change="checkChecks"> Number of nodes</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useTasks" @change="checkChecks"> Number of tasks</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useTasksPerNode" @change="checkChecks"> Number of tasks per
+                node</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useCpuPerTask" @change="checkChecks"> Number of CPus per
+                task</label>
+
+              <div v-if="maxGPU > 0">
+                <label><input type="checkbox" v-model="useGPU" @change="checkChecks"> Number of GPUs per node per
+                  task</label>
+              </div>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useMemory" @change="checkChecks"> Memory per task</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useModules" @change="checkChecks"> Modules to load</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="useCommand" @change="checkChecks"> The command to run</label>
+            </div>
+
+          </form>
+
+          <form class="uk-form-stacked">
+
+            <!-- wall time -->
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Maximum time</label>
+              <div class="uk-form-controls">
+                <input class="uk-input" id="form-stacked-text" type="text" v-model="maxWalltime"
+                  :disabled="selectedPartition" @change="calculateLimits">
+              </div>
+            </div>
+
+            <div v-if="useNodes">
+              <!-- min nodes -->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Minimum nodes</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="minNodes"
+                    :disabled="selectedPartition" @change="calculateLimits">
+                </div>
+              </div>
+            </div>
+
+            <div v-if="useNodes || useTasks">
+              <!-- max nodes -->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Maximum nodes</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="maxNodes"
+                    :disabled="selectedPartition" @change="calculateLimits">
+                </div>
+              </div>
+            </div>
+
+            <div v-if="useMemory">
+              <!-- Memory -->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Memory per node</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="maxMem"
+                    :disabled="selectedPartition" @change="calculateLimits">
+                </div>
+              </div>
+            </div>
+
+            <div v-if="useCpuPerTask || useTasks || useTasksPerNode">
+              <!-- Cores -->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Cores per node</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="maxCores"
+                    :disabled="selectedPartition" @change="calculateLimits">
+                </div>
+              </div>
+            </div>
+
+            <div v-if="useGPU">
+              <!-- GPU -->
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">GPUs per node</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="maxGPU"
+                    :disabled="selectedPartition" @change="calculateLimits">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <!-- Shared -->
+              <label><input type="checkbox" v-model="allowShared" :disabled="selectedPartition" @change="checkChecks">
+                Allow shared nodes</label>
+            </div>
+
+          </form>
+
+        </div> <!-- column -->
+
+
+        <div class="uk-width-1-4">
+
+          <form class="uk-form-stacked">
+
+            <!-- Job name -->
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Enter job name</label>
+              <div class="uk-form-controls">
+                <input class="uk-input" id="form-stacked-text" type="text" v-model="jobName">
+              </div>
+            </div>
+
+            <!-- Account -->
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Enter account</label>
+              <div class="uk-form-controls">
+                <input class="uk-input" id="form-stacked-text" type="text" v-model="accountNumber">
+              </div>
+            </div>
+
+            <!-- Output filename -->
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Enter output filename</label>
+              <div class="uk-form-controls">
+                <input class="uk-input" id="form-stacked-text" type="text" v-model="outputFilename">
+              </div>
+            </div>
+
+            <!-- wall time -->
+            <div class="uk-margin">
+              <label class="uk-form-label" for="form-stacked-text">Time for the job to complete</label>
+              <div class="uk-form-controls">
+                <input class="uk-input" id="form-stacked-text" type="text" v-model="selectedWallTime"
+                  @change="checkWallTime">
+              </div>
+            </div>
+
+            <!-- Nodes selection -->
+            <div v-if="useNodes">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select number of nodes</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedNodes" :min="1"
+                    :max="maxNodes" @input="checkNodes">
+                </div>
+              </div>
+            </div>
+
+            <!-- Tasks selection -->
+            <div v-if="useTasks">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select total number of tasks</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedTasks" :min="1"
+                    :max="maxTasks" @input="checkTasks">
+                </div>
+              </div>
+            </div>
+
+            <!-- Task per node selection -->
+            <div v-if="useTasksPerNode">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select number of tasks per node</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedTasksPerNode"
+                    :min="1" :max="maxCores" @input="checkTasksPerNode">
+                </div>
+              </div>
+            </div>
+
+            <!-- CPU per task selection -->
+            <div v-if="useCpuPerTask">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select number of CPU cores per tasks</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedCpuPerTask"
+                    :min="1" :max="maxCores">
+                </div>
+              </div>
+            </div>
+
+            <!-- GPU per task selection -->
+            <div v-if="useGPU">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select number of GPUs per tasks</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedGPU" :min="1"
+                    :max="maxGPU" @input="checkGPU">
+                </div>
+              </div>
+            </div>
+
+            <!-- Memory selection -->
+            <div v-if="useMemory">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Select memory per tasks in MB</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="number" v-model.number="selectedMemory" :min="0"
+                    :max="maxMem" @input="checkMemory">
+                </div>
+              </div>
+              <label class="uk-form-label" v-if="memAboveRecommended">Selection allows {{ Math.floor(maxMem /
+                selectedMemory) }} tasks per node</label>
+            </div>
+
+            <!-- Options selection -->
+            <div class="uk-margin">
+              <div class="uk-form-label">Options</div>
+
+              <div v-if="allowShared">
+                <label><input type="checkbox" v-model="selectedShare"> Allow sharing of this node</label>
+
+                <br>
+              </div>
+
+              <label><input type="checkbox" v-model="selectedRequeue"> Job is requeable</label>
+
+              <br>
+
+              <label><input type="checkbox" v-model="selectedExitError"> Exit on any error</label>
+
+              <br>
+
+              <div v-if="useModules">
+                <label><input type="checkbox" v-model="selectedPurge"> Purge modules before command</label>
+              </div>
+            </div>
+
+            <div v-if="useModules">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Modules to load separated by semicolon <b>;</b></label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="from_stacked_text" type="text" v-model="selectedModules">
+                </div>
+              </div>
+            </div>
+
+            <!-- Command selection -->
+            <div v-if="useCommand">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">Command to run</label>
+                <div class="uk-form-controls">
+                  <input class="uk-input" id="form-stacked-text" type="text" v-model="selectedCommand">
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div> <!-- column -->
+
+        <!-- Job script -->
+        <div class="uk-width-1-2">
+          <label class="uk-form-label">Job script (copy paste this and adjust)</label>
+          <pre><code>{{ jobScript }}</code></pre>
+        </div> <!-- column -->
+
+      </div> <!-- uk-grid -->
+
+      <script src="app.js"></script>
+    </div> <!-- uk-container -->
+  </div> <!-- app -->
+</body>
+
+</html>

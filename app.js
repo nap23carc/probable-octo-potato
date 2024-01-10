@@ -3,19 +3,19 @@ const { createApp } = Vue
 createApp({
   data() {
     return {
-      jsonURL: 'https://open.pages.sigma2.no/job-script-generator/data.json',
+      jsonURL: 'data.json',
       jsonData: {},
 
       clusters: {},
       selectedCluster: null,
       selectedPartition: null,
-      selectedWallTime: "00:01:00",
+      selectedWallTime: "00:07:00",
       jobName: "Test",
-      accountNumber: "nn9999k",
+      accountNumber: "1000001",
       outputFilename: "slurm-%j.out",
       partitionCommand: "",
-      
-      maxWalltime: "72:00:00",
+
+      maxWalltime: "48:00:00",
       maxNodes: 32,
       minNodes: 1,
       maxTasks: 1024,
@@ -23,7 +23,7 @@ createApp({
       maxCores: 32,
       maxGPU: 2,
       allowShared: true,
-      
+
       useNodes: false,
       useTasks: true,
       useTasksPerNode: false,
@@ -38,12 +38,12 @@ createApp({
       selectedTasks: 1,
       selectedTasksPerNode: 1,
       selectedCpuPerTask: 1,
-      selectedMemory: 2048,
+      selectedMemory: 1,
       selectedGPU:1,
       selectedShare: true,
       selectedRequeue: false,
-      selectedExitError: true,
-      selectedPurge: true,
+      selectedExitError: false,
+      selectedPurge: false,
       selectedCommand: "<Your command here>",
       selectedModules: "",
 
@@ -126,14 +126,14 @@ createApp({
       this.jsonData = response.data
       this.setClusterData()
     })
-    
+
 
   },
   methods: {
     setClusterData() {
       this.clusters = this.jsonData.clusters
       this.selectedCluster = this.clusters[0]
-      
+
       if (this.selectedCluster.name != "Other") {
         this.selectedPartition = this.selectedCluster.partitions[0]
       }
@@ -243,6 +243,6 @@ createApp({
           this.partitionCommand = ""
         }
       }
-    }    
+    }
   }
 }).mount('#app')

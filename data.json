@@ -1,20 +1,21 @@
 {
     "clusters": [
         {
-            "name": "Fram",
+            "name": "Hopper",
             "partitions": [
                 {
                     "name": "normal",
-                    "nodes": 996,
+                    "nodes": 51,
                     "cores_per_node": 32,
                     "memory_per_node": 60000,
                     "min_nodes": 1,
                     "max_nodes": 32,
-                    "max_walltime": "168:00:00",
-                    "node_allocation": "exclusive"
+                    "max_walltime": "48:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--partition=normal"
                 },
                 {
-                    "name": "devel",
+                    "name": "debug",
                     "nodes": 1000,
                     "cores_per_node": 8,
                     "memory_per_node": 60000,
@@ -22,18 +23,18 @@
                     "max_nodes": 8,
                     "max_walltime": "00:30:00",
                     "node_allocation": "exclusive",
-                    "command": "--qos=devel"
+                    "command": "--partition=debug"
                 },
                 {
-                    "name": "short",
+                    "name": "condo",
                     "nodes": 1000,
                     "cores_per_node": 16,
                     "memory_per_node": 60000,
                     "min_nodes": 1,
                     "max_nodes": 10,
-                    "max_walltime": "02:00:00",
+                    "max_walltime": "48:00:00",
                     "node_allocation": "exclusive",
-                    "command": "--qos=short"
+                    "command": "--partition=condo"
                 },
                 {
                     "name": "optimist",
@@ -63,13 +64,13 @@
                     "memory_per_node": 60000,
                     "max_walltime": "168:00:00",
                     "node_allocation": "shared",
-                    "command": "--partition=course --reservation=NRIS_HPC_onboarding"
+                    "command": "--partition=course --reservation=carc_HPC_onboarding"
 
                 }
             ]
         },
         {
-            "name": "Saga",
+            "name": "Taos",
             "partitions": [
                 {
                     "name": "normal",
@@ -129,7 +130,7 @@
             ]
         },
         {
-            "name": "Betzy",
+            "name": "Wheeler",
             "partitions": [
                 {
                     "name": "normal",
@@ -142,18 +143,43 @@
                     "node_allocation": "exclusive"
                 },
                 {
-                    "name": "preproc",
-                    "nodes": 6,
+                    "name": "devel",
+                    "nodes": 4,
                     "cores_per_node": 128,
-                    "memory_per_node": 1000000,
+                    "memory_per_node": 250000,
                     "min_nodes": 1,
-                    "max_nodes": 1,
-                    "max_walltime": "24:00:00",
-                    "node_allocation": "shared",
-                    "command": "--qos=preproc"
+                    "max_nodes": 4,
+                    "max_walltime": "1:00:00",
+                    "node_allocation": "exclusive",
+                    "command": "--qos=devel"
                 },
                 {
-                    "name": "devel",
+                    "name": "accel",
+                    "nodes": 4,
+                    "cores_per_node": 64,
+                    "memory_per_node": 500000,
+                    "gpus_per_node": 64,
+                    "max_walltime": "168:00:00",
+                    "node_allocation": "shared",
+                    "command": "--partition=accel"
+                }
+            ]
+        },
+        {
+            "name": "Xena",
+            "partitions": [
+                {
+                    "name": "normal",
+                    "nodes": 1340,
+                    "cores_per_node": 128,
+                    "memory_per_node": 250000,
+                    "min_nodes": 4,
+                    "max_nodes": 512,
+                    "max_walltime": "96:00:00",
+                    "node_allocation": "exclusive"
+                },
+                {
+                    "name": "debug",
                     "nodes": 4,
                     "cores_per_node": 128,
                     "memory_per_node": 250000,
